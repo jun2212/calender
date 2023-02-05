@@ -1,13 +1,22 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
-const CalendarHeader = (props) => {
+const CalendarHeader = ({
+  currentMonthString,
+  currentYear,
+  onPressPrevious,
+  onPressNextButton,
+}) => {
   return (
     <View style={styles.header}>
-      <TouchableOpacity style={styles.headerButton}>&lt;</TouchableOpacity>
+      <TouchableOpacity style={styles.headerButton} onPress={onPressPrevious}>
+        &lt;
+      </TouchableOpacity>
       <Text
         style={styles.headerText}
-      >{`${props.targetMonthString}  ${props.targetYear}`}</Text>
-      <TouchableOpacity style={styles.headerButton}>&gt;</TouchableOpacity>
+      >{`${currentMonthString}  ${currentYear}`}</Text>
+      <TouchableOpacity style={styles.headerButton} onPress={onPressNextButton}>
+        &gt;
+      </TouchableOpacity>
     </View>
   );
 };

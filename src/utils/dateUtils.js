@@ -19,6 +19,13 @@ const getMonthLastDate = (year, month) => {
   return monthLastDate.getDate();
 };
 
+const getNextMonth = (year, month) => {
+  if (month === 11) {
+    return { year: year + 1, month: 0 };
+  }
+  return { year: year, month: month + 1 };
+};
+
 const getPreviousMonth = (year, month) => {
   if (month === 0) {
     return { year: year - 1, month: 11 };
@@ -43,6 +50,7 @@ export {
   getCurrentDate,
   getMonthStartDay,
   getMonthLastDate,
+  getNextMonth,
   getPreviousMonth,
   getWeekCount,
 };
