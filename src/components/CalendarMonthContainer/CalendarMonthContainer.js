@@ -11,16 +11,10 @@ import {
   getWeekCount,
 } from "../../utils/dateUtils";
 
-const CalendarMonthContainer = (props) => {
-  const { currentYear, currentMonth, currentDay } = props;
+const CalendarMonthContainer = ({ currentYear, currentMonth }) => {
   const monthStartDay = getMonthStartDay(currentYear, currentMonth);
   const monthLastDate = getMonthLastDate(currentYear, currentMonth);
-  const previousMonth = getPreviousMonth(currentYear, currentMonth);
   const weekCount = getWeekCount(monthStartDay, monthLastDate);
-  const previousMonthLastDate = getMonthLastDate(
-    previousMonth.year,
-    previousMonth.month,
-  );
 
   return (
     <View style={styles.monthContent}>

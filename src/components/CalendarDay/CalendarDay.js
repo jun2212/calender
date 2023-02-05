@@ -8,10 +8,10 @@ import {
   TouchableOpacityProps,
 } from "react-native";
 
-const CalendarDay = (props) => {
+const CalendarDay = ({ date }) => {
   return (
     <TouchableOpacity style={styles.btn}>
-      <Text style={styles.text}>{props.date}</Text>
+      <Text style={styles.text}>{date}</Text>
     </TouchableOpacity>
   );
 };

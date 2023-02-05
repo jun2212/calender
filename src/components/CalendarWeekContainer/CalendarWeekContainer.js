@@ -10,8 +10,7 @@ import {
   getWeekCount,
 } from "../../utils/dateUtils";
 
-const CalendarWeekContainer = (props) => {
-  const { year, month, weekNumber } = props;
+const CalendarWeekContainer = ({ year, month, weekNumber }) => {
   const monthStartDay = getMonthStartDay(year, month);
   const monthLastDate = getMonthLastDate(year, month);
   const previousMonth = getPreviousMonth(year, month);
@@ -23,33 +22,30 @@ const CalendarWeekContainer = (props) => {
   return (
     <View style={styles.weekContainer}>
       {new Array(7).fill("").map((_, index) => {
+        const uniqueKey = "key_" + weekNumber + index;
+
         if (weekNumber === 0) {
           if (index < monthStartDay) {
             return (
               <CalendarDay
                 date={previousMonthLastDate - (monthStartDay - index)}
-                key={"key_" + weekNumber + index}
+                key={uniqueKey}
               />
             );
           }
 
           return (
-            <CalendarDay
-              date={index - monthStartDay + 1}
-              key={"key_" + weekNumber + index}
-            />
+            <CalendarDay date={index - monthStartDay + 1} key={uniqueKey} />
           );
         }
 
-        const currentIndex = index + weekNumber * 7 - monthStartDay + 1;
+        const currentDate = index + weekNumber * 7 - monthStartDay + 1;
 
-        if (currentIndex > monthLastDate) {
-          return <Text style={styles.emptyText} key={"key_" + weekNumber + index}></Text>;
+        if (currentDate > monthLastDate) {
+          return <Text style={styles.emptyText} key={uniqueKey}></Text>;
         }
 
-        return (
-          <CalendarDay date={currentIndex} key={"key_" + weekNumber + index} />
-        );
+        return <CalendarDay date={currentDate} key={uniqueKey} />;
       })}
     </View>
   );
