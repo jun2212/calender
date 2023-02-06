@@ -9,13 +9,13 @@ const CalendarHeader = ({
   return (
     <View style={styles.header}>
       <TouchableOpacity style={styles.headerButton} onPress={onPressPrevious}>
-        &lt;
+        <Text>&lt;</Text>
       </TouchableOpacity>
       <Text
         style={styles.headerText}
       >{`${currentMonthString}  ${currentYear}`}</Text>
       <TouchableOpacity style={styles.headerButton} onPress={onPressNextButton}>
-        &gt;
+        <Text>&gt;</Text>
       </TouchableOpacity>
     </View>
   );
