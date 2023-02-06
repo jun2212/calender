@@ -3,8 +3,9 @@ const getCurrentDate = () => {
   const currentYear = date.getFullYear();
   const currentMonth = date.getMonth() + 1;
   const currentDay = date.getDate();
+  const currentDayOfTheWeek = date.getDay();
 
-  return { currentYear, currentMonth, currentDay };
+  return { currentYear, currentMonth, currentDay, currentDayOfTheWeek };
 };
 
 const getMonthStartDay = (year, month) => {
@@ -14,9 +15,17 @@ const getMonthStartDay = (year, month) => {
 };
 
 const getMonthLastDate = (year, month) => {
-  const monthLastDate = new Date(year, month, 0);
+  const monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-  return monthLastDate.getDate();
+  if (year % 400 == 0) {
+    monthDays[1] = 29;
+  } else if (year % 100 == 0) {
+    monthDays[1] = 28;
+  } else if (year % 4 == 0) {
+    monthDays[1] = 29;
+  }
+
+  return monthDays[month];
 };
 
 const getNextMonth = (year, month) => {
@@ -37,13 +46,6 @@ const getWeekCount = (monthStartDay, monthLastDate) => {
   const WeekCount = Math.ceil((monthStartDay + monthLastDate) / 7);
 
   return WeekCount;
-};
-
-const getPrevDate = (date) => {
-  if (date.month === 0) {
-    return { year: date.year - 1, month: 11, day: date.day };
-  }
-  return { year: date.year, month: date.month - 1, day: date.day };
 };
 
 export {
