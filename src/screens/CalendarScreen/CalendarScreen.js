@@ -2,18 +2,25 @@ import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 import { CalendarHeader } from "../../components/CalendarHeader/CalendarHeader";
-import { DayOfWeek } from "../../components/DayOfWeek/DayOfWeek";
+import { DayOfTheWeekContainer } from "../../components/DayOfTheWeekContainer/DayOfTheWeekContainer";
 import { CalendarMonthContainer } from "../../components/CalendarMonthContainer/CalendarMonthContainer";
 
-import { getCurrentDate, getNextMonth, getPreviousMonth } from "../../utils/dateUtils";
+import {
+  getCurrentDate,
+  getNextMonth,
+  getPreviousMonth,
+} from "../../utils/dateUtils";
 import { MONTH_STRING } from "../../config/constants";
 
 function CalendarScreen() {
   const [targetDate, setTargetDate] = useState({});
+  const [selectedDate, setSelectedDate] = useState({});
   const currentMonthString = MONTH_STRING[targetDate.currentMonth];
 
   useState(() => {
-    setTargetDate(getCurrentDate());
+    const currentDate = getCurrentDate();
+    setTargetDate(currentDate);
+    setSelectedDate(currentDate);
   }, []);
 
   const onPressPreviousButton = () => {
@@ -43,24 +50,26 @@ function CalendarScreen() {
   };
 
   return (
-    <View>
+    <View style={styles.calender}>
       <CalendarHeader
         currentMonthString={currentMonthString}
         currentYear={targetDate.currentYear}
         onPressNextButton={onPressNextButton}
         onPressPrevious={onPressPreviousButton}
       />
-      <DayOfWeek />
+      <DayOfTheWeekContainer />
       <CalendarMonthContainer
         currentYear={targetDate.currentYear}
         currentMonth={targetDate.currentMonth}
+        selectedDate={selectedDate}
+        setSelectedDate={setSelectedDate}
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  headerButton: { color: "blue" },
+  calender: { backgroundColor: "white", height: "100%" },
 });
 
 export { CalendarScreen };
