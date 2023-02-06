@@ -3,14 +3,18 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { CalendarDay } from "../CalendarDay/CalendarDay";
 
 import {
-  getCurrentDate,
   getMonthStartDay,
   getMonthLastDate,
   getPreviousMonth,
-  getWeekCount,
 } from "../../utils/dateUtils";
 
-const CalendarWeekContainer = ({ year, month, weekNumber }) => {
+const CalendarWeekContainer = ({
+  year,
+  month,
+  weekNumber,
+  selectedDate,
+  setSelectedDate,
+}) => {
   const monthStartDay = getMonthStartDay(year, month);
   const monthLastDate = getMonthLastDate(year, month);
   const previousMonth = getPreviousMonth(year, month);
@@ -18,34 +22,75 @@ const CalendarWeekContainer = ({ year, month, weekNumber }) => {
     previousMonth.year,
     previousMonth.month,
   );
+  const { currentYear, currentMonth, currentDay } = selectedDate;
+
+  const onSelectDay = (day) => {
+    setSelectedDate({
+      ...selectedDate,
+      currentYear: year,
+      currentMonth: month,
+      currentDay: day,
+    });
+  };
 
   return (
     <View style={styles.weekContainer}>
       {new Array(7).fill("").map((_, index) => {
         const uniqueKey = "key_" + weekNumber + index;
+        const day = weekNumber * 7 + index - monthStartDay + 1;
+        let isSelected = false;
+
+        if (
+          year === currentYear &&
+          month === currentMonth &&
+          day === currentDay
+        ) {
+          isSelected = true;
+        }
 
         if (weekNumber === 0) {
           if (index < monthStartDay) {
             return (
               <CalendarDay
-                date={previousMonthLastDate - (monthStartDay - index)}
+                day={previousMonthLastDate - (monthStartDay - index)}
+                isSelected={isSelected}
+                onSelectDay={onSelectDay}
+                otherMonthDate={true}
                 key={uniqueKey}
               />
             );
           }
 
           return (
-            <CalendarDay date={index - monthStartDay + 1} key={uniqueKey} />
+            <CalendarDay
+              day={index - monthStartDay + 1}
+              isSelected={isSelected}
+              onSelectDay={onSelectDay}
+              key={uniqueKey}
+            />
           );
         }
 
-        const currentDate = index + weekNumber * 7 - monthStartDay + 1;
-
-        if (currentDate > monthLastDate) {
-          return <Text style={styles.emptyText} key={uniqueKey}></Text>;
+        if (day > monthLastDate) {
+          return (
+            <CalendarDay
+              day={day - monthLastDate}
+              isSelected={isSelected}
+              onSelectDay={onSelectDay}
+              otherMonthDate={true}
+              key={uniqueKey}
+            />
+          );
         }
 
-        return <CalendarDay date={currentDate} key={uniqueKey} />;
+        return (
+          <CalendarDay
+            day={day}
+            isSelected={isSelected}
+            onSelectDay={onSelectDay}
+            key={uniqueKey}
+          />
+        );
       })}
     </View>
   );

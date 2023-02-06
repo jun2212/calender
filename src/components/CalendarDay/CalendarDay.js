@@ -1,31 +1,37 @@
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  TextProps,
-  ViewStyle,
-  StyleProp,
-  TouchableOpacityProps,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
-const CalendarDay = ({ date }) => {
+const CalendarDay = ({ day, isSelected, onSelectDay, otherMonthDate = false }) => {
   return (
-    <TouchableOpacity style={styles.btn}>
-      <Text style={styles.text}>{date}</Text>
+    <View style={styles.buttonWrapper}>
+    <TouchableOpacity style={styles.dayButton} onPress={() => onSelectDay(day)} disabled={otherMonthDate}>
+      <Text
+        style={[
+          styles.text,
+          otherMonthDate && styles.otherMonthDate,
+          isSelected && styles.selectedDay,
+        ]}
+      >
+        {day}
+      </Text>
     </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  btn: { width: "14.2%" },
+  buttonWrapper: {width: "14.2%", alignItems: "center"},
+  dayButton: {},
   text: {
     lineHeight: 30,
     textAlign: "center",
-    borderWidth: 1,
-    borderColor: "transparent",
   },
-  isNotCur: {
+  otherMonthDate: {
     color: "#C9C9C9",
+  },
+  selectedDay: {
+    width: "35px",
+    border: "solid 2px blue",
+    borderRadius: "50%",
   },
 });
 
