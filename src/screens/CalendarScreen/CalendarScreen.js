@@ -28,6 +28,7 @@ function CalendarScreen() {
   const [selectedDate, setSelectedDate] = useState({});
   const [isMonth, setIsMonth] = useState(true);
   const [weekNumber, setWeekNumber] = useState(0);
+
   const currentMonthString = MONTH_STRING[targetDate.currentMonth];
   const monthStartDay = getMonthStartDay(
     targetDate.currentYear,
@@ -58,6 +59,7 @@ function CalendarScreen() {
       currentYear: year,
       currentMonth: month,
     });
+    setWeekNumber(0);
   };
 
   const setNextMonth = () => {
@@ -71,15 +73,6 @@ function CalendarScreen() {
       currentYear: year,
       currentMonth: month,
     });
-  };
-
-  const onPressPreviousButton = () => {
-    setPreviousMonth();
-    setWeekNumber(0);
-  };
-
-  const onPressNextButton = () => {
-    setNextMonth();
     setWeekNumber(0);
   };
 
@@ -115,21 +108,20 @@ function CalendarScreen() {
   };
 
   const gesture = Gesture.Pan().onEnd((e) => {
-    if (e.translationY < -10) {
+    if (e.translationY < -15) {
       runOnJS(setToWeekState)();
       return;
     }
-    if (e.translationY > 10) {
+    if (e.translationY > 15) {
       runOnJS(setToMonthState)();
       return;
     }
-    if (!isMonth) {
-      if (e.translationX < -10) {
-        runOnJS(onDragRight)();
-      }
-      if (e.translationX > 10) {
-        runOnJS(onDragLeft)();
-      }
+    if (e.translationX < -10) {
+      isMonth ? runOnJS(setPreviousMonth)() : runOnJS(onDragRight)();
+      return;
+    }
+    if (e.translationX > 10) {
+      isMonth ? runOnJS(setNextMonth)() : runOnJS(onDragLeft)();
     }
   });
 
@@ -145,8 +137,8 @@ function CalendarScreen() {
       <CalendarHeader
         currentMonthString={currentMonthString}
         currentYear={targetDate.currentYear}
-        onPressNextButton={onPressNextButton}
-        onPressPreviousButton={onPressPreviousButton}
+        setNextMonth={setNextMonth}
+        setPreviousMonth={setPreviousMonth}
       />
       <DayOfTheWeekContainer />
       <GestureHandlerRootView>
