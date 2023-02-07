@@ -3,12 +3,12 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 const CalendarHeader = ({
   currentMonthString,
   currentYear,
-  onPressPrevious,
+  onPressPreviousButton,
   onPressNextButton,
 }) => {
   return (
     <View style={styles.header}>
-      <TouchableOpacity style={styles.headerButton} onPress={onPressPrevious}>
+      <TouchableOpacity style={styles.headerButton} onPress={onPressPreviousButton}>
         <Text>&lt;</Text>
       </TouchableOpacity>
       <Text
@@ -24,7 +24,7 @@ const CalendarHeader = ({
 const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
     marginBottom: 10,
   },

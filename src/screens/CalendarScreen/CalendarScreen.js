@@ -1,75 +1,186 @@
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Animated } from "react-native";
+import { runOnJS } from "react-native-reanimated";
+import {
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from "react-native-gesture-handler";
+
+import { MONTH_STRING } from "../../config/constants";
 
 import { CalendarHeader } from "../../components/CalendarHeader/CalendarHeader";
 import { DayOfTheWeekContainer } from "../../components/DayOfTheWeekContainer/DayOfTheWeekContainer";
 import { CalendarMonthContainer } from "../../components/CalendarMonthContainer/CalendarMonthContainer";
+import { CalendarWeekContainer } from "../../components/CalendarWeekContainer/CalendarWeekContainer";
 
 import {
   getCurrentDate,
   getNextMonth,
   getPreviousMonth,
+  getMonthStartDay,
+  getMonthLastDate,
+  getWeekCount,
 } from "../../utils/dateUtils";
-import { MONTH_STRING } from "../../config/constants";
 
 function CalendarScreen() {
   const [targetDate, setTargetDate] = useState({});
   const [selectedDate, setSelectedDate] = useState({});
+  const [isMonth, setIsMonth] = useState(true);
+  const [weekNumber, setWeekNumber] = useState(0);
   const currentMonthString = MONTH_STRING[targetDate.currentMonth];
+  const monthStartDay = getMonthStartDay(
+    targetDate.currentYear,
+    targetDate.currentMonth,
+  );
+  const monthLastDate = getMonthLastDate(
+    targetDate.currentYear,
+    targetDate.currentMonth,
+  );
+  const weekCount = getWeekCount(monthStartDay, monthLastDate);
+
+  const setToMonthState = () => {
+    setIsMonth(true);
+  };
+
+  const setToWeekState = () => {
+    setIsMonth(false);
+  };
+
+  const setPreviousMonth = () => {
+    const { year, month } = getPreviousMonth(
+      targetDate.currentYear,
+      targetDate.currentMonth,
+    );
+
+    setTargetDate({
+      ...targetDate,
+      currentYear: year,
+      currentMonth: month,
+    });
+  };
+
+  const setNextMonth = () => {
+    const { year, month } = getNextMonth(
+      targetDate.currentYear,
+      targetDate.currentMonth,
+    );
+
+    setTargetDate({
+      ...targetDate,
+      currentYear: year,
+      currentMonth: month,
+    });
+  };
+
+  const onPressPreviousButton = () => {
+    setPreviousMonth();
+    setWeekNumber(0);
+  };
+
+  const onPressNextButton = () => {
+    setNextMonth();
+    setWeekNumber(0);
+  };
+
+  const onDragLeft = () => {
+    if (weekNumber === 0) {
+      const { year, month } = getPreviousMonth(
+        targetDate.currentYear,
+        targetDate.currentMonth,
+      );
+      const previousMonthLastDate = getMonthLastDate(year, month);
+
+      setTargetDate({
+        ...targetDate,
+        currentYear: year,
+        currentMonth: month,
+      });
+
+      setWeekNumber(previousMonthLastDate);
+      return;
+    }
+
+    setWeekNumber(weekNumber - 1);
+  };
+
+  const onDragRight = () => {
+    if (weekNumber + 1 === weekCount) {
+      setNextMonth();
+      setWeekNumber(0);
+      return;
+    }
+
+    setWeekNumber(weekNumber + 1);
+  };
+
+  const gesture = Gesture.Pan().onEnd((e) => {
+    if (e.translationY < -10) {
+      runOnJS(setToWeekState)();
+      return;
+    }
+    if (e.translationY > 10) {
+      runOnJS(setToMonthState)();
+      return;
+    }
+    if (!isMonth) {
+      if (e.translationX < -10) {
+        runOnJS(onDragRight)();
+      }
+      if (e.translationX > 10) {
+        runOnJS(onDragLeft)();
+      }
+    }
+  });
 
   useState(() => {
     const currentDate = getCurrentDate();
+
     setTargetDate(currentDate);
     setSelectedDate(currentDate);
   }, []);
 
-  const onPressPreviousButton = () => {
-    const previousMonth = getPreviousMonth(
-      targetDate.currentYear,
-      targetDate.currentMonth,
-    );
-
-    setTargetDate({
-      ...targetDate,
-      currentYear: previousMonth.year,
-      currentMonth: previousMonth.month,
-    });
-  };
-
-  const onPressNextButton = () => {
-    const nextMonth = getNextMonth(
-      targetDate.currentYear,
-      targetDate.currentMonth,
-    );
-
-    setTargetDate({
-      ...targetDate,
-      currentYear: nextMonth.year,
-      currentMonth: nextMonth.month,
-    });
-  };
-
   return (
-    <View style={styles.calender}>
+    <View style={styles.calendarScreen}>
       <CalendarHeader
         currentMonthString={currentMonthString}
         currentYear={targetDate.currentYear}
         onPressNextButton={onPressNextButton}
-        onPressPrevious={onPressPreviousButton}
+        onPressPreviousButton={onPressPreviousButton}
       />
       <DayOfTheWeekContainer />
-      <CalendarMonthContainer
-        currentYear={targetDate.currentYear}
-        currentMonth={targetDate.currentMonth}
-        selectedDate={selectedDate}
-        setSelectedDate={setSelectedDate}
-      />
+      <GestureHandlerRootView>
+        <GestureDetector gesture={gesture}>
+          <Animated.View>
+            {isMonth ? (
+              <CalendarMonthContainer
+                currentYear={targetDate.currentYear}
+                currentMonth={targetDate.currentMonth}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                weekCount={weekCount}
+              />
+            ) : (
+              <CalendarWeekContainer
+                year={targetDate.currentYear}
+                month={targetDate.currentMonth}
+                weekNumber={weekNumber}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+              />
+            )}
+          </Animated.View>
+        </GestureDetector>
+      </GestureHandlerRootView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  calender: { backgroundColor: "white", height: "100%" },
+  calendarScreen: {
+    paddingTop: "15%",
+    flex: 1,
+  },
 });
 
 export { CalendarScreen };

@@ -1,23 +1,19 @@
 import { StyleSheet, View } from "react-native";
 
-import { CalendarWeekContainer } from "../CalendarWeekContainer/CalendarWeekContainer";
+import { CalendarWeek } from "../CalendarWeek/CalendarWeek";
 
-import {
-  getMonthStartDay,
-  getMonthLastDate,
-  getWeekCount,
-} from "../../utils/dateUtils";
-
-const CalendarMonthContainer = ({ currentYear, currentMonth, selectedDate, setSelectedDate }) => {
-  const monthStartDay = getMonthStartDay(currentYear, currentMonth);
-  const monthLastDate = getMonthLastDate(currentYear, currentMonth);
-  const weekCount = getWeekCount(monthStartDay, monthLastDate);
-
+const CalendarMonthContainer = ({
+  currentYear,
+  currentMonth,
+  selectedDate,
+  setSelectedDate,
+  weekCount,
+}) => {
   return (
     <View style={styles.monthContent}>
       {new Array(weekCount).fill("").map((_, index) => {
         return (
-          <CalendarWeekContainer
+          <CalendarWeek
             year={currentYear}
             month={currentMonth}
             weekNumber={index}

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { CalendarDay } from "../CalendarDay/CalendarDay";
 
@@ -11,7 +11,7 @@ import {
 const CalendarWeekContainer = ({
   year,
   month,
-  weekNumber,
+  weekNumber = 0,
   selectedDate,
   setSelectedDate,
 }) => {
@@ -34,7 +34,7 @@ const CalendarWeekContainer = ({
   };
 
   return (
-    <View style={styles.weekContainer}>
+    <View style={styles.week}>
       {new Array(7).fill("").map((_, index) => {
         const uniqueKey = "key_" + weekNumber + index;
         const day = weekNumber * 7 + index - monthStartDay + 1;
@@ -97,9 +97,10 @@ const CalendarWeekContainer = ({
 };
 
 const styles = StyleSheet.create({
-  weekContainer: {
+  week: {
     flexDirection: "row",
     justifyContent: "space-around",
+    padding: "3%"
   },
   emptyText: { width: "14.2%" },
 });

@@ -20,18 +20,20 @@ const CalendarDay = ({ day, isSelected, onSelectDay, otherMonthDate = false }) =
 
 const styles = StyleSheet.create({
   buttonWrapper: {width: "14.2%", alignItems: "center"},
-  dayButton: {},
+  dayButton: {width: "60%"},
   text: {
     lineHeight: 30,
     textAlign: "center",
+    borderWidth: 1,
+    borderColor: "transparent",
   },
   otherMonthDate: {
     color: "#C9C9C9",
   },
   selectedDay: {
-    width: "35px",
-    border: "solid 2px blue",
-    borderRadius: "50%",
+    borderColor: "blue",
+    borderWidth: 1,
+    borderRadius: 60,
   },
 });
 
