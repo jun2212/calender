@@ -3,19 +3,19 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 const CalendarHeader = ({
   currentMonthString,
   currentYear,
-  onPressPreviousButton,
-  onPressNextButton,
+  setPreviousMonth,
+  setNextMonth,
 }) => {
   return (
     <View style={styles.header}>
-      <TouchableOpacity style={styles.headerButton} onPress={onPressPreviousButton}>
-        <Text>&lt;</Text>
+      <TouchableOpacity style={styles.headerButton} onPress={setPreviousMonth}>
+        <Text style={styles.headerButtonText}>&lt;</Text>
       </TouchableOpacity>
       <Text
         style={styles.headerText}
       >{`${currentMonthString}  ${currentYear}`}</Text>
-      <TouchableOpacity style={styles.headerButton} onPress={onPressNextButton}>
-        <Text>&gt;</Text>
+      <TouchableOpacity style={styles.headerButton} onPress={setNextMonth}>
+        <Text style={styles.headerButtonText}>&gt;</Text>
       </TouchableOpacity>
     </View>
   );
@@ -30,6 +30,14 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 20,
+  },
+  headerButton: {
+    alignItems: "center",
+    width: "10%"
+  },
+  headerButtonText: {
+    fontSize: 20,
+    color: "blue",
   },
 });
 
