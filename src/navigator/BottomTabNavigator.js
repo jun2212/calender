@@ -23,6 +23,7 @@ function BottomTabNavigator() {
         name="Home"
         component={HomeScreen}
         options={{
+          tabBarLabel: "Home",
           tabBarIcon: () => (
             <FontAwesome name="home" size={24} color={"black"} />
           ),
@@ -32,6 +33,7 @@ function BottomTabNavigator() {
         name="Calendar"
         component={CalendarScreen}
         options={{
+          tabBarLabel: "Calendar",
           tabBarIcon: () => (
             <FontAwesome name="calendar" size={24} color={"black"} />
           ),
@@ -41,6 +43,7 @@ function BottomTabNavigator() {
         name="Library"
         component={LibraryScreen}
         options={{
+          tabBarLabel: "Library",
           tabBarIcon: () => (
             <Ionicons name="library" size={24} color={"black"} />
           ),
@@ -50,6 +53,7 @@ function BottomTabNavigator() {
         name="MyPage"
         component={MyPageScreen}
         options={{
+          tabBarLabel: "MyPage",
           tabBarIcon: () => (
             <MaterialCommunityIcons name="account" size={24} color={"black"} />
           ),

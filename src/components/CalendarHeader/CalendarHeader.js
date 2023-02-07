@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   headerButton: {
     alignItems: "center",
-    width: "10%"
+    width: "10%",
   },
   headerButtonText: {
     fontSize: 20,

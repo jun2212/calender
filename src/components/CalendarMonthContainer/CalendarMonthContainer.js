@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 
-import { CalendarWeek } from "../CalendarWeek/CalendarWeek";
+import { CalendarWeekContainer } from "../CalendarWeekContainer/CalendarWeekContainer";
 
 const CalendarMonthContainer = ({
   currentYear,
@@ -13,7 +13,7 @@ const CalendarMonthContainer = ({
     <View style={styles.monthContent}>
       {new Array(weekCount).fill("").map((_, index) => {
         return (
-          <CalendarWeek
+          <CalendarWeekContainer
             year={currentYear}
             month={currentMonth}
             weekNumber={index}

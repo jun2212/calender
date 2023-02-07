@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   week: {
     flexDirection: "row",
     justifyContent: "space-around",
-    padding: "3%"
+    padding: "3%",
   },
   emptyText: { width: "14.2%" },
 });

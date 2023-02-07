@@ -82,7 +82,11 @@ function CalendarScreen() {
         targetDate.currentYear,
         targetDate.currentMonth,
       );
+
+      const previousMonthStartDay = getMonthStartDay(year, month);
       const previousMonthLastDate = getMonthLastDate(year, month);
+
+      const previousMonthWeekCount = getWeekCount(previousMonthStartDay, previousMonthLastDate)
 
       setTargetDate({
         ...targetDate,
@@ -90,7 +94,7 @@ function CalendarScreen() {
         currentMonth: month,
       });
 
-      setWeekNumber(previousMonthLastDate);
+      setWeekNumber(previousMonthWeekCount);
       return;
     }
 
