@@ -84,3 +84,9 @@ React Native 기반 앱을 제작
 - 아쉬운 점은 구현 사항에는 swipe 하여 날짜를 이동하는 게 나와있지 않아 해당 사항을 고려하지 않았던 점입니다. 만약 다시 구현하게 된다면 ScrollView를 사용하여 구현할 수 있을 것으로 생각됩니다.
 
 <br>
+
+### 디렉토리 구조
+
+<br>
+
+- react-native를 처음 사용해 보는 것이라 디렉터리 구조를 어떻게 설계할지에 대해 많이 고민했습니다. 여러 boilerplate들을 찾아봤지만 방법이 너무 다양했기에 기존에 제가 react에서 사용하던 구조랑 최대한 비슷하게 설계하기로 하였습니다. react에서는 Route에 따라 page들을 나누고, 해당 page를 구성하는 요소들을 component로 분류하였습니다. 이와 비슷하게 이 과제에서는 BottomTabNavigator tab에 따라서 screen을 나누고 해당 screen을 구성하는 요소들을 component로 분류하였습니다.
